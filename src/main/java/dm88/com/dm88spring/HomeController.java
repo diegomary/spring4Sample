@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import models.Flower;
 import models.Student;
+import mongo.MongoConnector;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/")
 public class HomeController {
+    private final MongoDatabase db;
+    
+    public HomeController(){
+        this.db = MongoConnector.Connect("diegomary88");
+    }
     
     
 	@RequestMapping(method = RequestMethod.GET)
@@ -68,11 +74,9 @@ public class HomeController {
         @RequestMapping(value = "/allflowers")  
         public @ResponseBody  
         List<org.bson.Document> getFlowers()
-        {        
-            MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://booksadmin:diegomary@ds061371.mongolab.com:61371/diegomary88"));
-            MongoDatabase db = mongoClient.getDatabase("diegomary88");         
-            MongoCollection<org.bson.Document> mc = db.getCollection("BachFlowers");        
-            long f =  mc.count();                        
+        {          
+            //MongoDatabase db = MongoConnector.Connect("diegomary88");
+            MongoCollection<org.bson.Document> mc = this.db.getCollection("BachFlowers");                                
             List<org.bson.Document> all;
             all = mc.find().into(new ArrayList<>());
             return all;            
@@ -82,17 +86,14 @@ public class HomeController {
         public @ResponseBody  
         List<String> getFlowers1()
         {                 
-            MongoCredential credential = MongoCredential.createCredential("booksadmin", "diegomary88", "diegomary".toCharArray());
-            MongoClient mongoClient = new MongoClient(new ServerAddress("ds061371.mlab.com",61371), Arrays.asList(credential));           
-            MongoDatabase db = mongoClient.getDatabase("diegomary88");         
-            MongoCollection<org.bson.Document> mc = db.getCollection("BachFlowers");                   
+            //MongoDatabase db = MongoConnector.Connect("diegomary88");       
+            MongoCollection<org.bson.Document> mc = this.db.getCollection("BachFlowers");                   
             FindIterable<org.bson.Document> it = mc.find();         
             List<String> allFlowers = new ArrayList<>();
             for (org.bson.Document document : it) {            
                 boolean add = allFlowers.add(document.getString("Name"));            
             }           
-            return  allFlowers;
-            
+            return  allFlowers;            
         }       
         
         
@@ -100,10 +101,8 @@ public class HomeController {
         public @ResponseBody  
         String getFlowers2()
         {                 
-            MongoCredential credential = MongoCredential.createCredential("booksadmin", "diegomary88", "diegomary".toCharArray());
-            MongoClient mongoClient = new MongoClient(new ServerAddress("ds061371.mlab.com",61371), Arrays.asList(credential));           
-            MongoDatabase db = mongoClient.getDatabase("diegomary88");         
-            MongoCollection<org.bson.Document> mc = db.getCollection("BachFlowers");                   
+            //MongoDatabase db = MongoConnector.Connect("diegomary88");      
+            MongoCollection<org.bson.Document> mc = this.db.getCollection("BachFlowers");                   
             FindIterable<org.bson.Document> it = mc.find();         
             ArrayList<Flower> allFlowers = new ArrayList<>();
             for (org.bson.Document document : it) {
@@ -122,10 +121,8 @@ public class HomeController {
         public @ResponseBody  
         String getFlowers3() throws IOException
         {                 
-            MongoCredential credential = MongoCredential.createCredential("booksadmin", "diegomary88", "diegomary".toCharArray());
-            MongoClient mongoClient = new MongoClient(new ServerAddress("ds061371.mlab.com",61371), Arrays.asList(credential));           
-            MongoDatabase db = mongoClient.getDatabase("diegomary88");         
-            MongoCollection<org.bson.Document> mc = db.getCollection("BachFlowers");                   
+            //MongoDatabase db = MongoConnector.Connect("diegomary88");       
+            MongoCollection<org.bson.Document> mc = this.db.getCollection("BachFlowers");                   
             FindIterable<org.bson.Document> it = mc.find();         
             ArrayList<Flower> allFlowers = new ArrayList<>();
             for (org.bson.Document document : it) {
@@ -145,10 +142,8 @@ public class HomeController {
         public @ResponseBody  
         ArrayList<Flower> getFlowers4() throws IOException
         {                 
-            MongoCredential credential = MongoCredential.createCredential("booksadmin", "diegomary88", "diegomary".toCharArray());
-            MongoClient mongoClient = new MongoClient(new ServerAddress("ds061371.mlab.com",61371), Arrays.asList(credential));           
-            MongoDatabase db = mongoClient.getDatabase("diegomary88");         
-            MongoCollection<org.bson.Document> mc = db.getCollection("BachFlowers");                   
+            //MongoDatabase db = MongoConnector.Connect("diegomary88");        
+            MongoCollection<org.bson.Document> mc = this.db.getCollection("BachFlowers");                   
             FindIterable<org.bson.Document> it = mc.find();         
             ArrayList<Flower> allFlowers = new ArrayList<>();
             for (org.bson.Document document : it) {
